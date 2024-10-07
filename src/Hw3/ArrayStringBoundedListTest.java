@@ -606,4 +606,189 @@ public class ArrayStringBoundedListTest {
 
         System.out.println();
     }
+
+    private static void testAddIntString() {
+        System.out.println("Testing add(int index, String s):");
+
+        StringBoundedList list = new ArrayStringBoundedList(7);
+        System.out.println(list); // []
+
+        list.add(0, "a");
+        System.out.println(list); // [a]
+
+        list.add(0, "z");
+        System.out.println(list); // [z, a]
+
+        list.add(2, "c");
+        System.out.println(list); // [z, a, c]
+
+        list.add(3, null);
+        System.out.println(list); // [z, a, c, null]
+
+        list.add(2, "b");
+        System.out.println(list); // [z, a, b, c, null]
+
+        list.add(2, null);
+        System.out.println(list); // [z, a, null, b, c, null]
+
+        // Good, IndexOutOfBoundsException thrown
+        try {
+            list.add(7, "d");
+            System.out.println("Exception not thrown!");
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Good, IndexOutOfBoundsException thrown");
+        } catch (Exception e) {
+            System.out.println("Wrong type of exception thrown!");
+        }
+
+        // Good, IndexOutOfBoundsException thrown
+        try {
+            list.add(-1, "y");
+            System.out.println("Exception not thrown!");
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Good, IndexOutOfBoundsException thrown");
+        } catch (Exception e) {
+            System.out.println("Wrong type of exception thrown!");
+        }
+
+        list.add(1, null);
+        System.out.println(list); // [z, null, a, null, b, c, null]
+
+        // Good, IllegalStateException thrown
+        try {
+            list.add(1, "y");
+            System.out.println("Exception not thrown!");
+        } catch (IllegalStateException e) {
+            System.out.println("Good, IllegalStateException thrown");
+        } catch (Exception e) {
+            System.out.println("Wrong type of exception thrown!");
+        }
+
+        System.out.println();
+    }
+
+    private static void testRemoveInt() {
+        System.out.println("Testing remove(int index):");
+
+        StringBoundedList list = new ArrayStringBoundedList(10);
+        list.add("a");
+        list.add(null);
+        list.add(null);
+        list.add("b");
+        list.add("c");
+        list.add("d");
+        list.add("e");
+        list.add("f");
+        System.out.println(list); // [a, null, null, b, c, d, e, f]
+
+        String removed = list.remove(4);
+        System.out.println(removed); // c
+        System.out.println(list);    // [a, null, null, b, d, e, f]
+
+        removed = list.remove(0);
+        System.out.println(removed); // a
+        System.out.println(list);    // [null, null, b, d, e, f]
+
+        removed = list.remove(1);
+        System.out.println(removed); // null
+        System.out.println(list);    // [null, b, d, e, f]
+
+        removed = list.remove(4);
+        System.out.println(removed); // f
+        System.out.println(list);    // [null, b, d, e]
+
+        // Good, IndexOutOfBoundsException thrown
+        try {
+            list.remove(4);
+            System.out.println("Exception not thrown!");
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Good, IndexOutOfBoundsException thrown");
+        } catch (Exception e) {
+            System.out.println("Wrong type of exception thrown!");
+        }
+
+        // Good, IndexOutOfBoundsException thrown
+        try {
+            list.remove(-1);
+            System.out.println("Exception not thrown!");
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Good, IndexOutOfBoundsException thrown");
+        } catch (Exception e) {
+            System.out.println("Wrong type of exception thrown!");
+        }
+
+        list.clear();
+
+        // Good, IndexOutOfBoundsException thrown
+        try {
+            list.remove(0);
+            System.out.println("Exception not thrown!");
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Good, IndexOutOfBoundsException thrown");
+        } catch (Exception e) {
+            System.out.println("Wrong type of exception thrown!");
+        }
+
+        System.out.println();
+    }
+
+    private static void testRemoveString() {
+        System.out.println("Testing remove(String):");
+
+        StringBoundedList list = new ArrayStringBoundedList(10);
+        list.add("a");
+        list.add("b");
+        list.add(null);
+        list.add("b");
+        list.add(null);
+        list.add("c");
+        list.add("d");
+        System.out.println(list);    // [a, b, null, b, null, c, d]
+
+        boolean removed = list.remove(new String("b"));
+        System.out.println(removed); // true
+        System.out.println(list);    // [a, null, b, null, c, d]
+
+        removed = list.remove(null);
+        System.out.println(removed); // true
+        System.out.println(list);    // [a, b, null, c, d]
+
+        removed = list.remove("b");
+        System.out.println(removed); // true
+        System.out.println(list);    // [a, null, c, d]
+
+        removed = list.remove("b");
+        System.out.println(removed); // false
+        System.out.println(list);    // [a, null, c, d]
+
+        removed = list.remove("d");
+        System.out.println(removed); // true
+        System.out.println(list);    // [a, null, c]
+
+        removed = list.remove("a");
+        System.out.println(removed); // true
+        System.out.println(list);    // [null, c]
+
+        removed = list.remove(null);
+        System.out.println(removed); // true
+        System.out.println(list);    // [c]
+
+        removed = list.remove(null);
+        System.out.println(removed); // false
+        System.out.println(list);    // [c]
+
+        removed = list.remove("c");
+        System.out.println(removed); // true
+        System.out.println(list);    // []
+
+        removed = list.remove(null);
+        System.out.println(removed);  // false
+        System.out.println(list);     // []
+
+        removed = list.remove("a");
+        System.out.println(removed);  // false
+        System.out.println(list);     // []
+
+        System.out.println();
+    }
 }

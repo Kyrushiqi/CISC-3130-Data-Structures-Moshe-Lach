@@ -2,6 +2,7 @@ package Hw3;
 import java.lang.StringBuilder;
 
 /*
+Homework 3, part 2:
 Implementation requirements:
 - All fields must be private
 - Less than 2 fields only. -> String[] and int
@@ -267,5 +268,57 @@ public class ArrayStringBoundedList implements StringBoundedList{
         }
         fullString.append("]");
         return fullString.toString();
+    }
+
+    /*
+     * Homework 3 part 3:
+     * In StringBoundedList interface...
+     * Implement 3 abstract methods -- add(int index, String s), remove(int index), and remove(String s)
+     *
+     * In ArrayStringBoundedList class...
+     * Override the abstract methods from the interface to make them concrete. (Concrete = have a body/behavior)
+     *
+     * Implementation requirements:
+     * - All fields must be private
+     * - There must not be more than two fields
+     * - One field must be String[] and the other field must be an int
+     * - Do not use anything from the java.util.package, except for methods of the java.util.Objects class.
+     * - Do not make a copy of the array.
+     */
+
+    /**
+     * Inserts the specified element at the specified position in this list.
+     * Shifts the element currently at that position (if any) and any subsequent elements to the right by one position.
+     *
+     * Ex: list has a capacity of 10 and represents [a, b, c, d].
+     * list.add(2, "x") should make list represent [a, b, x, c, d].
+     *
+     * @param index, insert element at this index
+     * @param s, element to be inserted into list
+     * @throws IllegalStateException if the array is already full.
+     * @throws IndexOutOfBoundsException if the provided index is negative, or if it is greater than the size.
+     * Note: it is possible to add an element at index size, as long as the list isn't full.
+     */
+    @Override
+    public void add(int index, String s){
+        // TODO: fill out add method
+    }
+
+    /**
+     * Removes the element at the specified position in this list.
+     * Shifts all subsequent elements to the left by one position to fill in the gap.
+     * Returns the element that was removed.
+     *
+     * Ex: list = [a, b, c, d]
+     * list.remove(1) should make the list represent [a, c, d] not [a, null, c, d]
+     *
+     * @param index element at this index to be removed.
+     * @return element that was removed.
+     * @throws IndexOutOfBoundsException if the provided index is negative, or greater than or equal to the size.
+     */
+    @Override
+    public String remove(int index){
+        //TODO: fill out body
+        return "hi";
     }
 }
