@@ -113,7 +113,48 @@ public class ArrayStringBoundedList implements StringBoundedList{
      * @param s the String to search for (possibly null)
      * @return the index of the first occurrence of s, or -1 if not found
      *
-     * if statement Logic:
+     * Logic:
+     * If the String s you are looking for IS null, then compare the element with null.
+     * If null == null then return that index.
+     *
+     * If the String s you are looking for is NOT null and the elemenet is equal to s then return that index.
+     * if c = c then return index;
+     * element = s (target String) then return element's index.
+     *
+     * Difference between this new one and the one below:
+     * - The for loop continuously checks if s is null.
+     * - Also has a necessary 'arr[i] != null' statement. Program won't work without it.
+     * It solves the NullPointerException error from below instead of using try and catch blocks.
+     *
+     * EX: If the element is null and is being compared to the String c (null == c?)
+     * Trace:
+     * if(s == null) // false b/c s == c rn, so it moves onto the else block.
+     * At the else block the conditions should be true in order to move on -- arr[i] != null && arr[i].equals(s)
+     * arr[i] != null // false b/c null != null, the element is null. So it skips that if statement and goes to
+     * updation i++ in the for loop. Essentially the program skips the index b/c the element at that index is null.
+     */
+    @Override
+    public int indexOf(String s){
+        // Unified logic, simplified and more efficient version of the one below this. Also fixes the Testing contains error.
+        for(int i = 0; i < currentSize; i++) {
+            if(s == null){
+                if(arr[i] == null){
+                    return i; // Return index if both s and arr[i] are null
+                }
+            } else {
+                if(arr[i] != null && arr[i].equals(s)){ // Compare only if arr[i] is not null
+                    return i;
+                }
+            }
+        }
+        return -1;
+
+    /* Almost correct here... Same logic, just simplified above:
+    Find out if String s is null. If it is null, search through array to find null.
+    If not null, then go through array to find element's index.
+
+
+    if statement Logic:
      * If the String you are looking for is NOT null, then go through the array and find that index.
      * If the element you are comparing with the String is null, it will produce a NullPointerException error.
      * EX: null = c? -> NullPointerException
@@ -144,9 +185,7 @@ public class ArrayStringBoundedList implements StringBoundedList{
      *
      * I use currentSize instead of arr.length b/c we only want to look through manually added elements.
      * I don't want to find the index of a default null value.
-     */
-    @Override
-    public int indexOf(String s){
+
         if(s != null){
             for(int i = 0; i < currentSize; i++){
                 try{
@@ -164,7 +203,7 @@ public class ArrayStringBoundedList implements StringBoundedList{
                 }
             }
         }
-        return -1;
+        return -1; */
     }
 
     /**

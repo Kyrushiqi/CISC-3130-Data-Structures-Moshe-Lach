@@ -559,7 +559,7 @@ public class ArrayStringBoundedListTest {
 
         System.out.println(list.contains("a"));  // true
         System.out.println(list.contains(null)); // true
-        System.out.println(list.contains("b"));  // true *
+        System.out.println(list.contains("b"));  // true * there was an error here before
         System.out.println(list.contains("c"));  // false
 
         System.out.println("Index 0: " + list.get(0)); // a
