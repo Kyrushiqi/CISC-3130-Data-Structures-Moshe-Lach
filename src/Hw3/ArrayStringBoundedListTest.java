@@ -234,6 +234,7 @@ public class ArrayStringBoundedListTest {
         System.out.println(list.indexOf("b"));  // 1
         System.out.println(list.indexOf("c"));  // -1
         System.out.println(list.indexOf(null)); // -1
+        System.out.println("Test case 1 Ends");
 
         list.add(null);
         list.add(null);
@@ -263,6 +264,7 @@ public class ArrayStringBoundedListTest {
         System.out.println(list.lastIndexOf("b"));  // 1
         System.out.println(list.lastIndexOf("c"));  // -1
         System.out.println(list.lastIndexOf(null)); // -1
+        System.out.println("Test case 1 end");
 
         list.add(null);
         list.add(null);
@@ -557,8 +559,12 @@ public class ArrayStringBoundedListTest {
 
         System.out.println(list.contains("a"));  // true
         System.out.println(list.contains(null)); // true
-        System.out.println(list.contains("b"));  // true
+        System.out.println(list.contains("b"));  // true *
         System.out.println(list.contains("c"));  // false
+
+        System.out.println("Index 0: " + list.get(0)); // a
+        System.out.println("Index 1: " + list.get(1)); // null
+        System.out.println("Index 2: " + list.get(2)); // b
 
         list.clear();
         System.out.println(list.contains("a"));  // false
