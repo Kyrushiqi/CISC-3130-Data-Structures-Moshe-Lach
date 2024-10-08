@@ -293,6 +293,16 @@ public class ArrayStringBoundedList implements StringBoundedList{
      * Ex: list has a capacity of 10 and represents [a, b, c, d].
      * list.add(2, "x") should make list represent [a, b, x, c, d].
      *
+     * replaceWithThisElement = the element that is going to replace a position in the array.
+     * nextReplacement = the next element that is going to replace a position in the array.
+     * Updates replaceWithThisElement to nextReplacement.
+     *
+     * replaceWithThisElement (hold): c
+     * nextReplacement(next hold/next element to be replaced): d
+     *  0  1  2  3
+     * [a, b, x, c]
+     * i: 2
+     *
      * @param index, insert element at this index
      * @param s, element to be inserted into list
      * @throws IllegalStateException if the array is already full.
@@ -301,7 +311,30 @@ public class ArrayStringBoundedList implements StringBoundedList{
      */
     @Override
     public void add(int index, String s){
-        // TODO: fill out add method
+        if(currentSize > arr.length){
+            throw new IllegalStateException();
+        }
+        if(index < 0 || index > arr.length){
+            throw new IndexOutOfBoundsException();
+        }
+
+        String replaceWithThisElement = arr[index];
+        arr[index] = s;
+
+        if(currentSize > arr.length){ // if there's more room in the array
+            String nextReplacement;
+
+            for(int i = index + 1; i < arr.length; i++){
+                if(currentSize > arr.length){ // checks if there's still more room in the array
+                    nextReplacement = arr[i];
+                    arr[i] = replaceWithThisElement;
+                    replaceWithThisElement = nextReplacement; // updates replaceWithThisElement with the next new element.
+                    // The next new element will replace an element in the array.
+                }
+            }
+        }
+        currentSize++;
+
     }
 
     /**
@@ -312,13 +345,34 @@ public class ArrayStringBoundedList implements StringBoundedList{
      * Ex: list = [a, b, c, d]
      * list.remove(1) should make the list represent [a, c, d] not [a, null, c, d]
      *
+     * Trace:
+     * oldElement = b
+     * hold = b
+     * hold2 = b
+     *  1  2  3  4 - currentSize
+     *  0  1  2  3 - indices
+     * [a, c, d, null]
+     * i = 0, 0 >= 1
+     *
      * @param index element at this index to be removed.
      * @return element that was removed.
      * @throws IndexOutOfBoundsException if the provided index is negative, or greater than or equal to the size.
      */
     @Override
     public String remove(int index){
-        //TODO: fill out body
-        return "hi";
+        String oldElement = arr[index];
+
+        String hold = arr[currentSize - 1];
+        String hold2;
+
+        for(int i = currentSize - 2; i >= index; i--){
+            hold2 = arr[i];
+            arr[i] = hold;
+            hold = hold2;
+        }
+        arr[currentSize - 1] = null; // replaces last element of the array with null, shortens array by 1
+        currentSize--;
+
+        return oldElement;
     }
 }

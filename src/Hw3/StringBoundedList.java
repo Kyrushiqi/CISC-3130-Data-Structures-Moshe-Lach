@@ -207,7 +207,12 @@ public interface StringBoundedList {
      * @return true (if element was removed) or false (if element was NOT removed)
      */
     default boolean remove(String s){
+        // Find first occurrence of s -> indexOf(s)
+        // Removes first occurrence of s and shifts elements to the left-> remove(indexOf(s)),
+        // returns a string of the removed element.
+        if(remove(indexOf(s)).equals(s)){
+            return true;
+        }
         return false;
-        // TODO: fill out body
     }
 }

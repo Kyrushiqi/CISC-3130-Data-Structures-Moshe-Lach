@@ -281,5 +281,17 @@ public class StringBoundedListTest {
         public void clear() {
             list.clear();
         }
+
+        // Not part of homework 3 part 3 but is needed here to run program. Not accurate methods!!
+        @Override
+        public void add(int index, String s){
+            // TODO: Body needed
+        }
+
+        @Override
+        public String remove(int index){
+            return "hi";
+            // TODO: body
+        }
     }
 }
