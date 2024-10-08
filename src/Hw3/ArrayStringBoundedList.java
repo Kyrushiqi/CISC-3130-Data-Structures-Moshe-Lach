@@ -293,25 +293,71 @@ public class ArrayStringBoundedList implements StringBoundedList{
      * Ex: list has a capacity of 10 and represents [a, b, c, d].
      * list.add(2, "x") should make list represent [a, b, x, c, d].
      *
-     * replaceWithThisElement = the element that is going to replace a position in the array.
-     * nextReplacement = the next element that is going to replace a position in the array.
-     * Updates replaceWithThisElement to nextReplacement.
-     *
-     * replaceWithThisElement (hold): c
-     * nextReplacement(next hold/next element to be replaced): d
-     *  0  1  2  3
-     * [a, b, x, c]
-     * i: 2
-     *
      * @param index, insert element at this index
      * @param s, element to be inserted into list
      * @throws IllegalStateException if the array is already full.
      * @throws IndexOutOfBoundsException if the provided index is negative, or if it is greater than the size.
      * Note: it is possible to add an element at index size, as long as the list isn't full.
+     *
+     * Trace:
+     * list.add(2, "x") -> index: 2, String: x
+     * arr.length = 5
+     *  1  2  3  4 - currentSize
+     *  0  1  2  3  4 - indices
+     * [a, b, c, d, null] i = 4, 4 > 2, true
+     * [a, b, c, d, d] i = 3, 3 > 2, true
+     * [a, b, c, c, d] i = 2, 2 > 2, false
+     *
+     * [a, b, x, c, d] -> arr[index] = s
+     * currentSize = 5
      */
     @Override
     public void add(int index, String s){
-        if(currentSize > arr.length){
+        // Check if the array is full
+        if(currentSize == arr.length){
+            throw new IllegalStateException();
+        }
+
+        // Check if the index is out of bounds
+        if(index < 0 || index > arr.length){
+            throw new IndexOutOfBoundsException();
+        }
+
+        // Shift elements to the right starting from the last element to the index
+        for(int i = currentSize; i > index; i--){
+            arr[i] = arr[i-1]; // Move the element one position to the right
+        }
+
+        // Insert the new element at the specified index
+        arr[index] = s;
+
+        // Increment the size of the list
+        currentSize++;
+
+        /* Old version:
+        Differences btw New and Old versions:
+        1) (Old) Incorrect size check, it should be (New) currentSize == arr.length instead of
+        (Old) currentSize < arr.length.
+        2) (New) Simplified the shifting to the right and adding the s.
+        Different Logic implemented:
+        - (New) Shifts elements to the right starting from the LAST ELEMENT to the index -- Starts at the end of the
+        array first then continue right.
+        - (Old) Shifts elements to the right starting from the INDEX to the last element -- Starts at the index first,
+        index could be in the middle of array, then continue right.
+
+        Logic:
+        replaceWithThisElement = the element that is going to replace a position in the array.
+        nextReplacement = the next element that is going to replace a position in the array.
+        Updates replaceWithThisElement to nextReplacement.
+
+        Trace:
+        replaceWithThisElement (hold): c
+        nextReplacement(next hold/next element to be replaced): d
+         0  1  2  3
+        [a, b, x, c]
+        i: 2
+
+        if(currentSize < arr.length){
             throw new IllegalStateException();
         }
         if(index < 0 || index > arr.length){
@@ -334,6 +380,7 @@ public class ArrayStringBoundedList implements StringBoundedList{
             }
         }
         currentSize++;
+        */
 
     }
 
@@ -360,6 +407,9 @@ public class ArrayStringBoundedList implements StringBoundedList{
      */
     @Override
     public String remove(int index){
+        if(index < 0 || index >= currentSize){
+            throw new IndexOutOfBoundsException();
+        }
         String oldElement = arr[index];
 
         String hold = arr[currentSize - 1];

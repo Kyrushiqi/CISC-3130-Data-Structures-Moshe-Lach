@@ -210,7 +210,13 @@ public interface StringBoundedList {
         // Find first occurrence of s -> indexOf(s)
         // Removes first occurrence of s and shifts elements to the left-> remove(indexOf(s)),
         // returns a string of the removed element.
-        if(remove(indexOf(s)).equals(s)){
+        if(s != null && indexOf(s) > -1){ // if String s is found, continue
+            if(remove(indexOf(s)).equals(s)){
+                return true;
+            }
+        }
+        if(s == null && indexOf(s) > -1){
+            remove(indexOf(s));
             return true;
         }
         return false;
