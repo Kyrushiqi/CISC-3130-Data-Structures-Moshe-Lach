@@ -215,4 +215,99 @@ public interface BoundedList<E> {
         }
         return false;
     }
+
+    /*
+    Homework 4 Part 2:
+        Add two default methods to the BoundedList Interface: addAll(), copyTo()
+     */
+
+    /**
+     * Combines two BoundedList's elements together. Adds 'other' BoundedList to 'this' BoundedList.
+     * Updates 'this' BoundedList. 'other' BoundedList -> 'this' BoundedList
+     * 'this' addAll of 'other'
+     *
+     * EX:
+     * if list = BoundedList w/ capacity of 10 => Representing [1, 2]
+     * if other = BoundedList => Representing [3, 4]
+     * list.addAll(other) should cause list = [1, 2, 3, 4] (Updates) and other = [3, 4] (Stays the same)
+     * Other list should not be modified. In example above, other should still represent [3, 4].
+     *
+     * 10/14/24 notes in NB:
+     * BoundedList<C> -> BoundedList<A> -> BoundedList<B> (C is a supertype of A, B is a subtype of A)
+     * Valid method calls: C.addAll(C), C.addAll(A), C.addAll(B), A.addAll(A), A.addAll(B), B.addAll(B)
+     * As long as the method calls involve 'this' >= 'other' on the hierarchy/tree then it is valid/correct.
+     * 'other' must be a subtype or of the same class to 'this' to be valid.
+     *
+     * Invalid method calls: A.addAll(C), B.addAll(C), B.addAll(A)
+     * These are invalid b/c 'this' < 'other' on the hierarchy/tree.
+     * 'this' is a subtype of 'other' => Invalid
+     * Conclusion:
+     * 'this' must be a supertype or of the same class to 'other' for it to be valid.
+     * 'other' must be a subtype or of the same class to 'this' to be valid.
+     *
+     * this.addAll(other):
+     * supertype.addAll(subtype) => valid
+     * sametype.addAll(sametype) => valid
+     * subtype.addAll(supertype) => invalid
+     *
+     *
+     * @param other
+     * @throws IllegalStateException when list's capacity isn't sufficient to accept all elements of the other list.
+     * And it shouldn't add any elements to the list.
+     * EX: if list.capacity() = 10, list.size() = 5, other.size() = 6 => 5+6 = 11 > 10
+     * then saying list.addAll(other) should cause an IllegalStateException and list.size() should remain 5.
+     */
+    default void addAll(BoundedList<? extends E> other){
+        // In <> above: other should be E (sametype) or any subtype of E (subtype) only. extends keyword does that for you.
+        // supertype.addAll(subtype) => valid
+        // sametype.addAll(sametype) => valid
+        // <? extends E> means any data type that is E or a subtype of E is a valid input for the method call.
+
+        // if 'this' list is full, true OR adding the sizes of 'this' and 'other' exceeds 'this' capacity then throw Exception.
+        if(isFull() || this.size() + other.size() > this.capacity()){
+            throw new IllegalStateException();
+        }
+        // Logic error: The condition, i < this.capacity was wrong.
+        // The for loop is used to iterate until the end of other's list.
+        // Instead of this.capacity, which iterates until 'this' list capacity is filled up. I already made sure
+        // that the combined sizes of 'this' and 'other' would not exceed the 'this' capacity in the if statement above.
+        for(int i = 0; i < other.size(); i++){
+            this.add(other.get(i)); // Add elements from 'other' to 'this'
+        }
+    }
+
+    /**
+     * Copies all the elements from 'this' BoundedList to the end of the 'other' BoundedList.
+     * 'this' BoundedList -> 'other' BoundedList. 'this' copyTo 'other'
+     * Basically the opposite of addAll().
+     *
+     * Ex: if BoundedList list = [1, 2] and BoundedList other = [3, 4] with capacity of 10,
+     * then list.copyTo(other) represents other = [3, 4, 1, 2] and list = [1, 2]
+     * list should not be modified.
+     *
+     * @throws IllegalStateException when other's capacity isn't sufficient to accept all the elements of this list.
+     * The method should not add any elements to the other list and should throw the Exception.
+     * Ex: list.size() = 6, other.capacity() = 10, and other.size() = 5,
+     * then list.copyTo(other) should cause exception and other.size() should remain 5.
+     *
+     * BoundedList<B> -> BoundedList<A> -> BoundedList<C> (B is a supertype of A) (C is a subtype of A)
+     * this.addAll(other):
+     * subtype.addAll(supertype) => valid
+     * sametype.addAll(sametype) => valid
+     * supertype.addAll(subtype) => invalid
+     *
+     * <? super E> means that the parameter accepts any data type that is E or a supertype of E.
+     * Look at what is in parameters here. Supertype or same type ^^
+     * subtype.addAll(supertype) => valid
+     * sametype.addAll(sametype) => valid
+     */
+    default void copyTo(BoundedList<? super E> other){
+        if(isFull() || this.size() + other.size() > other.capacity()){
+            throw new IllegalStateException();
+        }
+        // tracks 'this' list, goes through 'this' list
+        for(int i = 0; i < this.size(); i++){
+            other.add(get(i));
+        }
+    }
 }
