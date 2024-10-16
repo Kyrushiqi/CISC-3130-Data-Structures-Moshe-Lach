@@ -19,13 +19,18 @@ String -> E Return type
  */
 
 /*
+Homework 4 Part 3:
+Make the BoundedList interface extend the Iterable interface. -> Override iterator() method in concrete class.
+ */
+
+/*
  * A capacity-bounded list of specified E elements. E -> Any data type
  * Each list has a capacity, which is the maximum number of elements that the list can hold at one time.
  * Each list also has a size, which is the number of elements currently held by the list.
  * The elements of a list have indexes: the first element is at index 0, the second element is at index 1, and so on.
  * Null elements are allowed.
  */
-public interface BoundedList<E> {
+public interface BoundedList<E> extends Iterable<E>{
     /**
      * Returns the maximum number of elements that this list can hold at the same time.
      * @return the capacity
