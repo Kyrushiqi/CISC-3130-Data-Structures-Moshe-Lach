@@ -20,7 +20,7 @@ import java.util.Arrays;
 
 public class MissingNumberLC {
     public static void main(String[] args) {
-        int[] nums = {9, 6, 4, 2, 3, 5, 7, 0, 1}; // [0, 1, 2, 3, 4, 5, 6, 7, 9] Missing: 8
+        int[] nums = {3, 0, 1}; // [0, 1, 2, 3, 4, 5, 6, 7, 9] Missing: 8
         // nums = {9, 6, 4, 2, 3, 5, 7, 0, 1}; // [0, 1, 2, 3, 4, 5, 6, 7, 9] Missing: 8
         // nums = {3, 0, 1}; // [0, 1, 3] Missing: 2
         // nums = {0, 1}; // [0, 1, 2] Missing: 2
@@ -28,7 +28,7 @@ public class MissingNumberLC {
         // nums = {1}; // [0, 1] Missing: 0
         // nums = {0}; // [0, 1] Missing: 1
         System.out.println("Length: " + nums.length);
-        System.out.println(missingNumber(nums));
+        System.out.println("Missing number: " + missingNumber(nums));
     }
 
     // Codelab Accepted Answer (Doesn't allow modification of nums, sorting not allowed here, use CopyOf):
@@ -59,11 +59,14 @@ public class MissingNumberLC {
                 missingNum = i;
                 return missingNum;
             }
+            /* Professor: Not necessary, b/c missingNum = endRange is stated at the beginning. So if the missing number
+            is not detected in the loop, it will remain endRange, which would be the correct answer.
+
             // Checks if elements at the end of array matches up with index.
             if(arrCopy.length != arrCopy[arrCopy.length - 1]){ // check if the last element of array is equal to the array length.
                 missingNum = arrCopy.length; // if they aren't equal to one another than that means the last element is missing.
                 // Look at [0, 1] testcase. It is missing a 2.
-            }
+            }*/
         }
 
         return missingNum;
