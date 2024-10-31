@@ -187,4 +187,40 @@ public class DoublyLinkedList<E> { // DoublyLinkedList is a larger data structur
 
         return sb.append("]").toString();
     }
+
+    /*
+    Homework 5, part 3 (00521)
+    Objective:
+    Add 2 methods to the DoublyLinkedList class:
+    - public E removeFirst()
+    - public E removeLast()
+
+    The methods should throw a NoSuchElementException if the list is empty.
+
+    The running time of each method should be O(1). Note that in SinglyLinkedList, the running time of removeLast() was
+    O(n).
+     */
+
+    /**
+     * Removes and returns the first element of the list.
+     * @return first element of the list.
+     * @throws NoSuchElementException if the list is empty.
+     */
+    public E removeFirst(){ // O(1)
+        if(isEmpty()){
+            throw new NoSuchElementException();
+        }
+        /*Node<E> current = head.next;
+        head.next = null;
+        head = current;
+        current.previous = null;
+        size--;*/
+
+        Node<E> current = head;
+        head = head.next;
+        head.previous = null;
+        current.next = null;
+
+        return current.data;
+    }
 }
