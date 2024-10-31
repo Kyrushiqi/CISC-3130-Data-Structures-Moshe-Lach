@@ -74,14 +74,13 @@ public class DoublyLinkedList<E> { // DoublyLinkedList is a larger data structur
     public void addFirst(E element){ // O(1)
         if(isEmpty()){ // Case 1: if there are no nodes present
             tail = head = new Node<>(element);
-            size++;
         } else {
             // Case 2: if there's one or more nodes present
             head = head.previous = new Node<E>(element, null, head);
             // Above works b/c the assignment operator makes the Node object first then assigns it to the head.previous.
             // Head.previous then gets assigned to head.
-            size++;
         }
+        size++;
     }
 
     /**
@@ -199,6 +198,10 @@ public class DoublyLinkedList<E> { // DoublyLinkedList is a larger data structur
 
     The running time of each method should be O(1). Note that in SinglyLinkedList, the running time of removeLast() was
     O(n).
+
+    Refer to NB 10/31/24 for notes and visuals on this.
+    - Current doesn't exist outside the methods, so the reference of current to the removed node will be disregarded
+    and garbage collector will still collect that removed node.
      */
 
     /**
@@ -210,17 +213,39 @@ public class DoublyLinkedList<E> { // DoublyLinkedList is a larger data structur
         if(isEmpty()){
             throw new NoSuchElementException();
         }
-        /*Node<E> current = head.next;
-        head.next = null;
-        head = current;
-        current.previous = null;
-        size--;*/
-
         Node<E> current = head;
-        head = head.next;
-        head.previous = null;
-        current.next = null;
 
+        if(size <= 1){ // Case 1: 1 node present
+            head = null;
+            tail = null;
+        } else { // Case 2: 2 or more nodes present
+            head = head.next;
+            head.previous = null;
+            current.next = null;
+        }
+        size--;
+
+        return current.data;
+    }
+
+    /**
+     * Removes and returns the last element of the list.
+     * @return last element of the list.
+     * @throws NoSuchElementException if the list is empty.
+     */
+    public E removeLast(){ // O(1)
+        if(isEmpty()){
+            throw new NoSuchElementException();
+        }
+        Node<E> current = tail;
+        if(size <= 1){ // Case 1: 1 node present
+            removeFirst();
+        } else { // Case 2: 2 or more nodes present
+            tail = tail.previous;
+            tail.next = null;
+            current.previous = null;
+            size--;
+        }
         return current.data;
     }
 }

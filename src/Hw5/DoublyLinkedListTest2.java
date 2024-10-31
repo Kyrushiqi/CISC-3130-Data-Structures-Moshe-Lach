@@ -18,7 +18,7 @@ public class DoublyLinkedListTest2 {
         testGetFirst();
         testGetLast();
         testRemoveFirst();
-        //testRemoveLast();
+        testRemoveLast();
     }
 
     private static void testAddFirst() {
@@ -219,6 +219,7 @@ public class DoublyLinkedListTest2 {
             list.removeFirst();
             System.out.println("An exception should have occurred here, but didn't");
         } catch (NoSuchElementException ignored) {
+            System.out.println("Good, Exception has been caught");
         }
 
         list.addFirst("a");
@@ -281,7 +282,7 @@ public class DoublyLinkedListTest2 {
         } catch (NoSuchElementException ignored) {
         }
     }
-    /*
+
     private static void testRemoveLast() {
         System.out.println("testing removeLast");
 
@@ -291,6 +292,7 @@ public class DoublyLinkedListTest2 {
             list.removeLast();
             System.out.println("An exception should have occurred here, but didn't");
         } catch (NoSuchElementException ignored) {
+            System.out.println("Good, NoSuchElementException is caught");
         }
 
         list.addFirst("a");
@@ -352,5 +354,5 @@ public class DoublyLinkedListTest2 {
             System.out.println("An exception should have occurred here, but didn't");
         } catch (NoSuchElementException ignored) {
         }
-    }*/
+    }
 }
