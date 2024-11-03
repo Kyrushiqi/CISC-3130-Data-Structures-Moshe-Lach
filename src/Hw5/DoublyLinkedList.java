@@ -78,7 +78,7 @@ public class DoublyLinkedList<E> { // DoublyLinkedList is a larger data structur
             // Case 2: if there's one or more nodes present
             head = head.previous = new Node<E>(element, null, head);
             // Above works b/c the assignment operator makes the Node object first then assigns it to the head.previous.
-            // Head.previous then gets assigned to head.
+            // Head.previous then gets assigned to head. (Head.previous refers to the reference, not the "box" itself)
         }
         size++;
     }
@@ -247,5 +247,96 @@ public class DoublyLinkedList<E> { // DoublyLinkedList is a larger data structur
             size--;
         }
         return current.data;
+    }
+
+    /*
+    Homework 5, part 4 (00522):
+    Objective:
+    Add 4 more methods to the DoublyLinkedList class...
+    - clear()
+    - contains(Object o)
+    - add(E e)
+    - remove(Object o)
+
+    Look at NB 11/3/24 remove(Object o)'s Debug part for breakdown and visual.
+     */
+
+    /**
+     * Removes all the elements from the list.
+     */
+    public void clear(){
+        // Case 1: 1 node present
+        if(size <= 1){
+            head = null;
+            tail = null;
+        } else { // Case 2: 2 or more nodes present
+            Node<E> current = head;
+            while(current != null){
+                removeFirst();
+                current = head;
+            }
+        }
+        size = 0;
+    }
+
+    /**
+     * Determines whether the list contains the specified element.
+     * @param o looking for specified element o
+     * @return true (contains o) OR false (doesn't contain o)
+     */
+    public boolean contains(Object o){
+        Node<E> current = head;
+        while(current != null){
+            if(current.data.equals(o)){
+                return true;
+            }
+            current = current.next;
+        }
+        return false;
+    }
+
+    /**
+     * Adds the specified element to the end of the list and returns true.
+     * @param e element to be added at the end of the list
+     * @return true
+     */
+    public boolean add(E e){
+        addLast(e);
+        return true;
+    }
+
+    /**
+     * Removes the FIRST occurrence of the specified element from the list. Returns true if an element was
+     * removed; otherwise, returns false.
+     * @param o element o's first occurrence to be removed from list
+     * @return true (if element o was removed) OR false (if element o was NOT removed)
+     */
+    public boolean remove(Object o){
+        Node<E> current = head;
+        while(current != null){
+            if(current.data.equals(o)){
+                // Case 1: 1 node present
+                if(size <= 1){
+                    removeFirst();
+                } else { // Case 2: 2 or more nodes present
+                    if(head == current){ // Case 2.1: The first element is the one you want to remove.
+                        removeFirst();
+                        return true; // Immediately end method when this is executed.
+                    }
+                    if(tail == current){ // Case 2.2: The last element is the one you want to remove.
+                        removeLast();
+                        return true;
+                    }
+                    current.previous.next = current.next;
+                    current.next.previous = current.previous;
+                    current.previous = null;
+                    current.next = null;
+                    size--;
+                }
+                return true;
+            }
+            current = current.next;
+        }
+        return false;
     }
 }
