@@ -339,4 +339,51 @@ public class DoublyLinkedList<E> { // DoublyLinkedList is a larger data structur
         }
         return false;
     }
+
+    /*
+    Homework 5, part 5 (00523):
+    Objective:
+    Add 2 more methods to the DoublyLinkedList class...
+    - indexOf(Object o)
+    - lastIndexOf(Object o)
+     */
+
+    /**
+     * @param o
+     * @return index of the first occurrence of the specified element in the list.
+     * If the specified element doesn't occur in the list, the method returns -1.
+     */
+    public int indexOf(Object o){
+        int index = 0; // if index = -1, then index++ should be the first statement in the while loop. This is correct too.
+        Node<E> current = head;
+
+        while(current != null){
+            if(current.data.equals(o)){
+                return index;
+            }
+            index++;
+            current = current.next;
+        }
+        return -1;
+    }
+
+    /**
+     * @param o
+     * @return the index of the last occurrence of the specified element in the list.
+     * If the specified element doesn't occur in the list, the method returns -1.
+     */
+    public int lastIndexOf(Object o){
+        int indexOfLast = -1;
+        int index = 0;
+
+        Node<E> current = head;
+        while(current != null){
+            if(current.data.equals(o)){
+                indexOfLast = index;
+            }
+            index++;
+            current = current.next;
+        }
+        return indexOfLast;
+    }
 }
