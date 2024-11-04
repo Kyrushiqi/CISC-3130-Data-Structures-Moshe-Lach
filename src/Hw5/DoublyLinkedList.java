@@ -386,4 +386,212 @@ public class DoublyLinkedList<E> { // DoublyLinkedList is a larger data structur
         }
         return indexOfLast;
     }
+
+    /*
+    Homework 5, part 6 (00524):
+
+    Objective:
+    Add 4 more methods to the DoublyLinkedList class...
+    - get(int index)
+    - set(int index, E element)
+    - add(int index, E element)
+    - remove(int index)
+
+    The running time of all these methods should be O(n).
+
+    For each of these methods, minimize the number of required "link jumps."
+    Link jump occurs when we run a statement of the form current = current.next or current = current.previous.
+    Each call to one of these methods should perform at most n/2 link jumps, where n is the list's size.
+    In other words, if the desired index is within the first half of the list, start the current pointer at the
+    list's head; otherwise, start the current pointer at the list's tail.
+
+    Recall that in SinglyLinkedList, the running time of these methods was O(n), and we had to perform up to n
+    link jumps. Here, in DoublyLinkedList, the running time of these methods is still O(n), since n/2 is O(n),
+    but we've cut the running time down by half (approximately).
+     */
+
+    /**
+     * @param index
+     * @return the element at the specified index.
+     * @throws IndexOutOfBoundsException if index is negative (index < 0) or
+     * index is greater than or equal to size (index >= size).
+     */
+    public E get(int index){ // O(n)
+        if(index < 0 || index >= size){
+            throw new IndexOutOfBoundsException();
+        }
+        Node<E> current = head;
+        int indexCounter = 0;
+        // Optimized version: O(n/2) = O(n)
+        // Another way is to use for loops instead of while loops as showcased in set(int index, E element);
+        if(index < size/2){ // if the index is in the first half of the linkedList/list
+            while(current != null){ // O(n)
+                if(index == indexCounter){
+                    return current.data;
+                }
+
+                indexCounter++;
+                current = current.next;
+            }
+        } else if (index >= size/2){ // if the index is in the second half of the linkedList/list
+            indexCounter = size - 1;
+            current = tail; // start from the end
+
+            while(current != null){ // O(n)
+                if(index == indexCounter){
+                    return current.data;
+                }
+
+                indexCounter--;
+                current = current.previous;
+            }
+        }
+        return current.data; // Not rlly necessary but this method needs a return statement.
+
+        /* Acceptable answer but can be optimized to limit link jumps:
+        if(index < 0 || index >= size){
+            throw new IndexOutOfBoundsException();
+        }
+
+        int indexCounter = 0;
+        Node<E> current = head;
+
+        while(current != null){ // O(n)
+            if(index == indexCounter){
+                return current.data;
+            }
+
+            indexCounter++;
+            current = current.next;
+        }
+
+        return current.data; // Not rlly necessary but this method needs a return statement. */
+    }
+
+    /**
+     * Replaces the element at the specified index with the specified new element, and returns the old element.
+     * @param index replace element at this index
+     * @param element replace element at specified index with this element
+     * @return the old element (the element being replaced)
+     * @throws IndexOutOfBoundsException if index < 0 || index >= size
+     */
+    public E set(int index, E element){ // O(n) + O(n) = O(n) OR O(n/2) = O(n)
+        if(index < 0 || index >= size){
+            throw new IndexOutOfBoundsException();
+        }
+        Node<E> current = head;
+        E oldElement = current.data;
+        if(index < size/2){ // if index is in first half of list
+            for(int i = 0; i < size - 1; i++){ // O(n), runs up to size/2 times, 'i' never goes past the halfway point
+                if(index == i){
+                    oldElement = current.data;
+                    current.data = element;
+                    return oldElement;
+                }
+                current = current.next;
+            }
+        } else if(index >= size/2){ // if index is in the second half of the list
+            current = tail;
+            for(int i = size - 1; i >= 0; i--){ // O(n), runs up to size/2 times, 'i' never goes past the halfway point from the opposite direction.
+                if(index == i){
+                    oldElement = current.data;
+                    current.data = element;
+                    return oldElement;
+                }
+                current = current.previous;
+            }
+        }
+        return oldElement;
+    }
+
+    /**
+     * Adds the specified element to the list at the specified index.
+     * @param index
+     * @param element
+     * @throws IndexOutOfBoundsException if index < 0 || index > size (but note that index == size is allowed)
+     */
+    public void add(int index, E element){ // O(n)
+        if(index < 0 || index > size){
+            throw new IndexOutOfBoundsException();
+        }
+        Node<E> current;
+
+        if(index == 0){
+            addFirst(element);
+        } else if(index == size){
+            addLast(element);
+        } else if(index < size/2){
+            current = head;
+            for(int i = 0; i <= size-1; i++){
+                if(index-1 == i){
+                    current.next = current.next.previous = new Node<E>(element, current, current.next);
+                    size++;
+                }
+                current = current.next;
+            }
+        } else {
+            current = tail;
+            for(int i = size-1; i >= 0; i--){
+                if(index == i){
+                    current.previous = current.previous.next = new Node<E>(element, current.previous, current);
+                    size++;
+                }
+                current = current.previous;
+            }
+        }
+    }
+
+    /**
+     * Removes and returns the element at the specified index.
+     * @param index
+     * @return element at specified index
+     * @throws IndexOutOfBoundsException if index < 0 || index >= size
+     */
+    public E remove(int index){ // O(n)
+        if(index < 0 || index >= size){
+            throw new IndexOutOfBoundsException();
+        }
+
+        Node<E> current = head;
+        E oldElement = current.data;
+
+        if(index == 0){
+            oldElement = current.data;
+            removeFirst();
+            return oldElement;
+        } else if(index == size-1){
+            current = tail;
+            oldElement = current.data;
+            removeLast();
+            return oldElement;
+        } else if(index < size/2){
+            for(int i = 0; i < size-1; i++){
+                if(index == i){
+                    oldElement = current.data;
+                    current.previous.next = current.next;
+                    current.next.previous = current.previous;
+                    current.previous = null;
+                    current.next = null;
+                    size--;
+                    return oldElement;
+                }
+                current = current.next;
+            }
+        } else {
+            current = tail;
+            for(int i = size-1; i >= 0; i--){
+                if(index == i){
+                    oldElement = current.data;
+                    current.previous.next = current.next;
+                    current.next.previous = current.previous;
+                    current.previous = null;
+                    current.next = null;
+                    size--;
+                    return oldElement;
+                }
+                current = current.previous;
+            }
+        }
+        return oldElement;
+    }
 }
