@@ -1,5 +1,6 @@
 package Hw5;
 
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /*
@@ -40,7 +41,7 @@ Examples:
     if we only did tail = new Node<E> (element, tail, null);
     then the new node.previous would reference tail, but tail.next will still be referencing null.
  */
-public class DoublyLinkedList<E> { // DoublyLinkedList is a larger data structure compared to Node.
+public class DoublyLinkedList<E> implements Iterable<E> { // DoublyLinkedList is a larger data structure compared to Node.
     private static class Node<E> { // Node is a data structure, not an object. Node serves as a way to structure and organize data in a particular format.
         private E data;
         private Node<E> previous; // pointer to previous node
@@ -593,5 +594,63 @@ public class DoublyLinkedList<E> { // DoublyLinkedList is a larger data structur
             }
         }
         return oldElement;
+    }
+
+    /*
+    Make the DoublyLinkedList class implement Iterable interface.
+    The iterator() method should return an Iterator<E> that provides methods next() and hasNext().
+
+    Running time for each of the following methods should be O(1):
+    - iterator()
+    - Iterator's next()
+    - Iterator's hasNext()
+
+    Iterable (Classes that inherit from Iterable, can iterate) -
+    An interface representing a collection of elements that can be iterated.
+    Purpose: To provide a way for an object (like a collection) to be the target of a "for-each" loop.
+
+    Iterator (Does the iterating) -
+    An interface that provides a mechanism to traverse a collection one element at a time.
+    Not directly used in a for-each loop but powers it internally. (It is the logic behind an enhanced for-loop).
+        The enhanced for loop is built on the Iterator mechanism, using it internally to traverse collections in a clean
+        and concise way. However, it abstracts away the complexities of manually handling the Iterator object, making it
+        easier to use for most scenarios.
+
+    Purpose: To perform manual iteration over a collection, allowing both forward-only traversal and element retrieval.
+
+    More related notes in Package Hw4, ArrayBoundedList.java and Discord, 11/21/24
+     */
+
+    /**
+     * @return an iterator over elements of type T.
+     * This abstract method is from the Iterable interface and needs to be overriden.
+     */
+    @Override
+    public Iterator<E> iterator() { // O(1)
+        return new DoublyLinkedListIterator();
+    }
+
+    private class DoublyLinkedListIterator implements Iterator<E>{
+        private Node<E> iterCurrent; // Tracks the current node being iterated in the list.
+
+        // Constructor: Initializes the iterator to start at the head of the list.
+        public DoublyLinkedListIterator(){
+            iterCurrent = head; // Begin iteration from the first node (head).
+        }
+
+        @Override
+        public boolean hasNext(){ // O(1)
+            return iterCurrent != null;
+        }
+        @Override
+        public E next(){ // O(1)
+            if(!hasNext()){
+                throw new NoSuchElementException();
+            }
+            // Store the data of the current node before moving the iterator forward.
+            E result = iterCurrent.data; // Retrieve the data of the current node.
+            iterCurrent = iterCurrent.next; // Move pointer to the next node in the list.
+            return result; // Return the data of the iterated node.
+        }
     }
 }
