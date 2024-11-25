@@ -290,10 +290,11 @@ public class ArrayDeque<E> implements Iterable<E>{
      * @return a String containing all the elements in order from first to last, separated by the standard comma and
      * space; there should be the standard square brackets at the beginning and end.
      */
+    @Override
     public String toString(){
         StringBuilder sb = new StringBuilder("[");
         for(int i = 0; i < size(); i++){
-            sb.append(arr[(indexOfFirst + 1) % arr.length]);
+            sb.append(arr[(indexOfFirst + i) % arr.length]);
 
             if(i < size() - 1){
                 sb.append(", ");
