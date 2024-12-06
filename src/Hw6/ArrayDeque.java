@@ -1,6 +1,5 @@
 package Hw6;
 
-import java.util.Deque;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -101,7 +100,7 @@ public class ArrayDeque<E> implements Iterable<E>{
      *
      * Important note:
      * - There should never be a gap in between indexOfFirst and indexOfLast.
-     * (Throughout indexOfFirst and indexOfLast there should never be nulls, it should be only have continuous elements)
+     * (Throughout indexOfFirst and indexOfLast there should never be nulls, it should only have continuous elements)
      *
      * Notes + Cases w/ visuals in NB: 11/21/24
      */
@@ -153,7 +152,7 @@ public class ArrayDeque<E> implements Iterable<E>{
      *
      * Important note:
      * - There should never be a gap in between indexOfFirst and indexOfLast.
-     * (Throughout indexOfFirst and indexOfLast there should never be nulls, it should be only have continuous elements)
+     * (Throughout indexOfFirst and indexOfLast there should never be nulls, it should only have continuous elements)
      */
     public void addLast(E element){ // Amortized O(1)
         if(isFull()){
@@ -307,6 +306,40 @@ public class ArrayDeque<E> implements Iterable<E>{
        The Iterator should retrieve the elements in order from first to the last. You may have as many fields as you
        wish in the class that implements Iterator.
     */
+    // My solution -- also is correct! :)
+    @Override
+    public Iterator<E> iterator() {
+        return new DequeIterator();
+    }
+
+    /**
+     * Inner class that implements the Iterator for the deque.
+    */
+    private class DequeIterator implements Iterator<E> {
+        private int currentIndex = indexOfFirst;
+        private int count = 0;
+
+        @Override
+        public boolean hasNext() {
+            return count < size();
+        }
+
+        @Override
+        public E next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException("No more elements to iterate");
+            }
+
+            E currentElement = arr[currentIndex];
+
+            currentIndex = (currentIndex + 1) % arr.length;
+            count++;
+
+            return currentElement;
+        }
+    }
+
+    /* Professor's Solution:
     @Override
     public Iterator<E> iterator() {
         return new ArrayDequeIterator();
@@ -335,5 +368,5 @@ public class ArrayDeque<E> implements Iterable<E>{
             currentIndex = (currentIndex + 1) % arr.length;
             return result;
         }
-    }
+    } */
 }
